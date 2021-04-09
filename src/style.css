@@ -1,0 +1,22 @@
+html {
+    font-size: 16px;
+}
+.imageResultBox {
+display: grid;
+grid-gap: 10px;
+grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
+}
+.imageItem {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+body{
+    background-color:green;
+}
+
+.keywordRecommendation{
+    background: blue;
+    padding: 1rem 1.25rem;
+    margin: 0.125em;
+}

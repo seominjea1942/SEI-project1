@@ -1,0 +1,35 @@
+{
+  "name": "image",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seominjea1942/SEI-project1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seominjea1942/SEI-project1/issues"
+  },
+  "homepage": "https://github.com/seominjea1942/SEI-project1#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "css-loader": "^5.2.0",
+    "postcss": "^8.2.9",
+    "style-loader": "^2.0.0",
+    "tailwindcss": "^2.1.1",
+    "webpack": "^5.31.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "caman": "^2.0.0"
+  }
+}
