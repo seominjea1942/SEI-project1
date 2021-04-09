@@ -1,7 +1,6 @@
 const header = () => {
     const container = document.querySelector('.container')
     const header = document.createElement('header')
-
     let classesForHeader = ['bg-red-50', 'dark:bg-gray-800', 'flex', 'flex-row','items-center']
 
     header.classList.add(...classesForHeader)

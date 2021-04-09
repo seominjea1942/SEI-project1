@@ -9,15 +9,25 @@ const putImagesInContainer =(imageResultBox,dataArray)=>{
     container.appendChild(imageResultBox)
 }
 
+const resetImageGrid = ()=>{
+    const imageResultBox = document.querySelector('.imageResultBox')
+    if(imageResultBox !== null){
+        imageResultBox.remove();
+    }
+}
 
 const renderImageGrid =(dataArray)=>{
     // console.log(dataArray[0].webformatURL)
+    resetImageGrid();
+    if(dataArray.length>0){
     const imageResultBox = document.createElement('div')
     imageResultBox.setAttribute('class','imageResultBox')
     const contentContainer = document.createElement('section')
     contentContainer.id='contentContainer'
     putImagesInContainer(imageResultBox,dataArray);
-
+    } else {
+        console.log('no result')
+    }
 }
 
 export default renderImageGrid

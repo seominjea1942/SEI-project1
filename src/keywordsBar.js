@@ -19,6 +19,10 @@
         }
         //sort the tags based on the freq
         tags = Object.keys(tagCount)
+
+        //exclude search keywords in tag
+        let keyword = document.querySelector('#searchBar').value
+        tags.splice(tags.indexOf(keyword),1)
         tags.sort((a,b)=>{
             if(tagCount[a]>tagCount[b]){
                 return -1
@@ -40,7 +44,16 @@
         }
     }
 
+    const resetKeywordsBar = ()=>{
+        const recKeyword = document.querySelector('#recKeyword')
+        if(recKeyword !== null){
+            recKeyword.remove();
+        }
+    }
+
     let renderKeywordsBar = (imagesArray)=>{
+        resetKeywordsBar();
+        if(imagesArray.length>0){
         //set keywordsBar
         const keywordsBar = document.createElement('div')
         const container = document.querySelector('.container')
@@ -52,6 +65,7 @@
         let tags = getTagsInOrder(imagesArray)
         createKeyWordSearchButton(keywordsBar, tags);
         container.appendChild(keywordsBar)
+        }
     }
 
     export default renderKeywordsBar
