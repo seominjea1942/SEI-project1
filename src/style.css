@@ -1,16 +1,19 @@
 html {
     font-size: 16px;
 }
+
 .imageResultBox {
 display: grid;
 grid-gap: 10px;
 grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
 }
+
 .imageItem {
     width:100%;
     height:100%;
     object-fit: cover;
 }
+
 body{
     background-color:green;
 }
@@ -19,4 +22,18 @@ body{
     background: blue;
     padding: 1rem 1.25rem;
     margin: 0.125em;
+}
+
+#adjustmentBar{
+    display: none;
+}
+
+#canvasDivBlock{
+    background-color: rgb(20,20,20,0);
+    width:100px;
+    height:100px;
+}
+
+#cropOptionsBox{
+    display: none;
 }

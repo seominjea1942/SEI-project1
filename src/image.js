@@ -4,6 +4,8 @@ const putImagesInContainer =(imageResultBox,dataArray)=>{
         const prevImg = new Image();
         prevImg.src = dataArray[i].webformatURL
         prevImg.classList.add('imageItem')
+        prevImg.dataset.keyword = document.querySelector('#searchBar').value
+        prevImg.dataset.large = dataArray[i].largeImageURL
         imageResultBox.appendChild(prevImg)
     }
     container.appendChild(imageResultBox)
