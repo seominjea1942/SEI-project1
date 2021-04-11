@@ -1,7 +1,7 @@
 import './style.css'
 import header from './header.js'
 import renderKeywordsBar from './keywordsBar.js'
-import renderImageGrid from './image.js'
+import {renderImageGrid} from './image.js'
 import * as Editor from './editor.js'
 
 
@@ -11,13 +11,16 @@ const searchBar = document.querySelector('#searchBar')
 const getImageFromPixaBay = async() =>{
     let keyword = searchBar.value.trim().split(' ')
     keyword = keyword.join('+')
-    const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo`
+    const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&per_page=36`
+    const imageResultBox = document.createElement('div')
+    imageResultBox.setAttribute('class','grid setGridStyle')
     const response = await fetch(url)
     const data = await response.json()
     const dataArray = data.hits // image objects are under the hits arrray
     console.log(dataArray)
     renderKeywordsBar(dataArray)
-    renderImageGrid(dataArray)
+    renderImageGrid(imageResultBox,dataArray)
+  
 }
 
 //event listener
@@ -30,7 +33,6 @@ document.addEventListener('click',(e)=>{
     if(e.target.className === 'imageItem'){
         let imageURL = e.target.dataset.large
         let imageKeyword = e.target.dataset.keyword
-        console.log(imageKeyword)
         Editor.renderEditor(imageURL,imageKeyword)
     }
     if(e.target.id === 'cropButton'){
@@ -49,7 +51,12 @@ document.addEventListener('click',(e)=>{
         Editor.deactiveCrop();
     }
     if(e.target.id === 'downloadFile'){
-        console.log('hello')
+        Editor.downloadEditedImage();
+    }
+    if(e.target.id === 'goBackButton'){
+        Editor.resetContainer()
+        header();
+        getImageFromPixaBay();
     }
 })
 
@@ -84,8 +91,8 @@ searchBar.addEventListener('keypress',(e=>{
         getImageFromPixaBay();
     }
 }))
-
-
-
+window.addEventListener('resize', function () {
+    waterfall('.grid');
+});
 
 if(module&&module.hot) module.hot.accept()

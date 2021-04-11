@@ -12,6 +12,18 @@ let cropper;
 
 const downloadEditedImage =()=>{
     console.log(canvas.dataset.keyword)
+    let download = ((canvas, fileName)=>{
+        //init event
+        let e;
+        //Create link
+        const link = document.createElement('a')
+        //set props
+        link.download = fileName;
+        link.href = canvas.toDataURL('image/jpg', 1)
+
+        e = new MouseEvent ('click')
+        link.dispatchEvent(e);
+    })(canvas,canvas.dataset.keyword)
 }
 const deactiveCrop =()=>{
     cropper.destroy();
@@ -168,17 +180,19 @@ const resetContainer =()=>{
     container.innerHTML =''
 }
 
-const createCanvas=(imageURL)=>{
+const createCanvas=(imageURL,imageKey)=>{
     
-    // canvas.dataset.keyword = key
+
     canvas.id ='canvas'
     const ctx = canvas.getContext('2d')
+    canvas.dataset.keyword = imageKey
     container.appendChild(canvasDivBlock)
-
+    ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the rect to draw
     img.src = imageURL
     img.setAttribute('crossOrigin', '');
     
     img.onload = () => {
+        
         canvas.width = img.width;
         canvas.height = img.height;
         canvasDivBlock.style.width = `${img.width}px`
@@ -217,11 +231,11 @@ const loadEditFunctionBar=()=>{
     container.appendChild(editFunctionBar)
 }
 
-const renderEditor = (imageURL)=>{
+const renderEditor = (imageURL,imageKey)=>{
     resetContainer()
     header('editor')
-    createCanvas(imageURL)
+    createCanvas(imageURL,imageKey)
     loadEditFunctionBar()
 }
 
-export {renderEditor, changeBrightness, changeExposure, changeContrast, changeVibrance, changeSaturation, changeHue, changeSepia, changeNoise, activeCrop, deactiveCrop }
+export {renderEditor, changeBrightness, changeExposure, changeContrast, changeVibrance, changeSaturation, changeHue, changeSepia, changeNoise, activeCrop, deactiveCrop, downloadEditedImage, resetContainer }

@@ -1,10 +1,9 @@
 const header = (page='search') => {
     const container = document.querySelector('.container')
     const header = document.createElement('header')
-    let classesForHeader = ['bg-red-50', 'dark:bg-gray-800', 'flex', 'flex-row','items-center']
-
-    header.classList.add(...classesForHeader)
+    header.id = 'header'
     const logo = document.createElement('div')
+    logo.id = 'logo'
     logo.innerHTML ='logo'
     const searchBarContainer = document.createElement('div')
     searchBarContainer.id = 'searchBarContainer'
@@ -14,6 +13,7 @@ const header = (page='search') => {
     searchInput.setAttribute('id','searchBar')
     searchInput.setAttribute('placeholder','keyword')
     const clearButton = document.createElement('button')
+    clearButton.id ='keywordClearButton'
     clearButton.innerHTML = 'x'
 
     const downloadButton = document.createElement('button')

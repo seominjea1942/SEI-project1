@@ -1,14 +1,20 @@
+
 const putImagesInContainer =(imageResultBox,dataArray)=>{
-    const container = document.querySelector('.container')
     for(let i=0;i<dataArray.length;i++){
         const prevImg = new Image();
+        const div = document.createElement('div')
+        div.setAttribute('class','item')
         prevImg.src = dataArray[i].webformatURL
         prevImg.classList.add('imageItem')
         prevImg.dataset.keyword = document.querySelector('#searchBar').value
         prevImg.dataset.large = dataArray[i].largeImageURL
-        imageResultBox.appendChild(prevImg)
+        prevImg.onload = function(){
+            div.appendChild(prevImg)
+            imageResultBox.appendChild(div)
+            waterfall('.grid')
+        }
     }
-    container.appendChild(imageResultBox)
+
 }
 
 const resetImageGrid = ()=>{
@@ -18,18 +24,17 @@ const resetImageGrid = ()=>{
     }
 }
 
-const renderImageGrid =(dataArray)=>{
-    // console.log(dataArray[0].webformatURL)
+const renderImageGrid =(imageResultBox,dataArray)=>{
     resetImageGrid();
+    const container = document.querySelector('.container')
+    container.appendChild(imageResultBox)
     if(dataArray.length>0){
-    const imageResultBox = document.createElement('div')
-    imageResultBox.setAttribute('class','imageResultBox')
-    const contentContainer = document.createElement('section')
-    contentContainer.id='contentContainer'
-    putImagesInContainer(imageResultBox,dataArray);
+    // const contentContainer = document.createElement('section')
+    // contentContainer.id='contentContainer'
+    putImagesInContainer(imageResultBox,dataArray)
     } else {
         console.log('no result')
     }
 }
 
-export default renderImageGrid
+export {renderImageGrid}

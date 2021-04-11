@@ -57,9 +57,7 @@
         //set keywordsBar
         const keywordsBar = document.createElement('div')
         const container = document.querySelector('.container')
-        let keywordsBarClasses = ['bg-red-100', 'dark:bg-gray-800', 'flex', 'flex-row', 'items-center']
         keywordsBar.id = 'recKeyword'
-        keywordsBar.classList.add([...keywordsBarClasses])
 
         //generate keyword buttons
         let tags = getTagsInOrder(imagesArray)
