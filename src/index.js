@@ -11,7 +11,7 @@ const searchBar = document.querySelector('#searchBar')
 const getImageFromPixaBay = async() =>{
     let keyword = searchBar.value.trim().split(' ')
     keyword = keyword.join('+')
-    const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&per_page=36`
+    const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&per_page=48`
     const imageResultBox = document.createElement('div')
     imageResultBox.setAttribute('class','grid setGridStyle')
     const response = await fetch(url)
@@ -35,25 +35,57 @@ document.addEventListener('click',(e)=>{
         let imageKeyword = e.target.dataset.keyword
         Editor.renderEditor(imageURL,imageKeyword)
     }
+    if(e.target.id === 'cropBoxOnButton'){
+        if(document.querySelector('.cropper-hidden')===null){
+            Editor.activeCrop();
+        }
+    }
+    if(e.target.id === 'cropBoxOffButton'){
+        if(document.querySelector('.cropper-hidden')!==null){
+            Editor.deactiveCrop();
+        }
+    }
     if(e.target.id === 'cropButton'){
-        document.querySelector('#cropOptionsBox').style.display = 'block'
-        document.querySelector('#adjustmentBar').style.display = 'none'
-        Editor.activeCrop();
+        if(window.getComputedStyle(document.querySelector('#cropOptionsBox')).getPropertyValue('display')==='none'){
+            document.querySelector('#cropOptionsBox').style.display = 'block'
+            document.querySelector('#adjustmentBar').style.display = 'none'
+            document.querySelector('#adjustButton').style.backgroundColor = 'rgb(245,245,245)'
+            document.querySelector('#cropButton').style.backgroundColor = 'rgb(255,255,255)'
+            Editor.activeCrop();
+        }
+    }
+    if(e.target.id ==='cropActionButton'){
+        Editor.crop();
     }
     if(e.target.id === 'adjustButton'){
-        document.querySelector('#adjustmentBar').style.display = 'block'
-        document.querySelector('#cropOptionsBox').style.display = 'none'
+        if(window.getComputedStyle(document.querySelector('#adjustmentBar')).getPropertyValue('display')==='none'){
+            if(Editor.cropper!==undefined){
+                Editor.deactiveCrop();
+            }
+            document.querySelector('#adjustmentBar').style.display = 'block'
+            document.querySelector('#cropOptionsBox').style.display = 'none'
+            document.querySelector('#adjustButton').style.backgroundColor = 'rgb(255,255,255)'
+            document.querySelector('#cropButton').style.backgroundColor = 'rgb(245,245,245)'
+        }
     }
-    if(e.target.id === 'cropActiveButton'){
+    if(e.target.id === 'cropActiveButton'&&e.target.checked === true){
+        if(Editor.cropper!==undefined){
+            Editor.deactiveCrop();
+        }
         Editor.activeCrop();
     }
-    if(e.target.id === 'cropDeactiveButton'){
+    if(e.target.id === 'cropActiveButton'&&e.target.checked === false){
         Editor.deactiveCrop();
     }
     if(e.target.id === 'downloadFile'){
         Editor.downloadEditedImage();
     }
     if(e.target.id === 'goBackButton'){
+        if(Editor.cropper!==undefined){
+            Editor.deactiveCrop();
+        }
+        document.querySelector('#adjustmentBar').style.display = 'none'
+            document.querySelector('#cropOptionsBox').style.display = 'none'
         Editor.resetContainer()
         header();
         getImageFromPixaBay();
@@ -91,8 +123,8 @@ searchBar.addEventListener('keypress',(e=>{
         getImageFromPixaBay();
     }
 }))
-window.addEventListener('resize', function () {
-    waterfall('.grid');
-});
+// window.addEventListener('resize', function () {
+//     waterfall('.grid');
+// });
 
 if(module&&module.hot) module.hot.accept()

@@ -1,7 +1,7 @@
 const header = (page='search') => {
     const container = document.querySelector('.container')
     const header = document.createElement('header')
-    header.id = 'header'
+    
     const logo = document.createElement('div')
     logo.id = 'logo'
     logo.innerHTML ='logo'
@@ -27,11 +27,13 @@ const header = (page='search') => {
     if(page==='search'){
         searchBarContainer.appendChild(searchInput)
         searchBarContainer.appendChild(clearButton)
+        header.id = 'header'
         header.appendChild(logo)
         header.appendChild(searchBarContainer)
         container.appendChild(header)
     }
     if(page==='editor'){
+        header.id = 'headerEditor'
         header.appendChild(goBackButton)
         header.appendChild(downloadButton)
         container.appendChild(header)

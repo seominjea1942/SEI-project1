@@ -11,14 +11,16 @@ const putImagesInContainer =(imageResultBox,dataArray)=>{
         prevImg.onload = function(){
             div.appendChild(prevImg)
             imageResultBox.appendChild(div)
-            waterfall('.grid')
+            if(document.querySelector('.grid') !== null){
+                waterfall('.grid')
+            }
         }
     }
 
 }
 
 const resetImageGrid = ()=>{
-    const imageResultBox = document.querySelector('.imageResultBox')
+    const imageResultBox = document.querySelector('.grid')
     if(imageResultBox !== null){
         imageResultBox.remove();
     }

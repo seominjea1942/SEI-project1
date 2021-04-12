@@ -1,14 +1,24 @@
 import header from './header.js'
 
 const container = document.querySelector('.container')
+const cropOptionsBox = document.createElement('div')
+cropOptionsBox.id = 'cropOptionsBox'
+cropOptionsBox.setAttribute('class','childrenBar')
+const board = document.createElement('div')
+board.id = 'artboard'
+const functionsContainer = document.createElement('div')
+functionsContainer.id = 'functionsContainer'
 const adjustmentBar = document.createElement('div')
 adjustmentBar.id = 'adjustmentBar'
+adjustmentBar.setAttribute('class','childrenBar')
 let img = new Image();
 const canvasDivBlock = document.createElement('div')
 canvasDivBlock.id = 'canvasDivBlock'
-const canvas = document.createElement('canvas')
+let canvas = document.createElement('canvas')
+canvas.id = 'canvas'
 canvasDivBlock.appendChild(canvas)
 let cropper;
+
 
 const downloadEditedImage =()=>{
     console.log(canvas.dataset.keyword)
@@ -31,13 +41,44 @@ const deactiveCrop =()=>{
 const activeCrop = () => {
     let selectCanvas = document.querySelector('#canvas')
     let canvasDivBlock = document.querySelector('#canvasDivBlock')
+    console.log(canvas.width, canvas.height)
     canvasDivBlock.style.width = `${canvas.width}px`
     canvasDivBlock.style.height = `${canvas.height}px`
     canvasDivBlock.style.backgroundColor = `background-color: rgb(20,20,20)`;
     cropper = new Cropper(selectCanvas,{
         autoCropArea: 1,
         background: false,
+        zoomOnTouch: false,
+        zoomOnWheel: false,
+        movable:false,
+        zoomable:false
     })
+}
+
+const crop = () =>{
+    let newCanvas = cropper.getCroppedCanvas()
+    let ctx = canvas.getContext('2d')
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+    canvas.width = newCanvas.width
+    canvas.height = newCanvas.height
+    console.log(canvas.width, newCanvas.width)
+    ctx.drawImage(newCanvas,0,0)
+    canvasDivBlock.style.width = `${newCanvas.width}px`
+    canvasDivBlock.style.height = `${newCanvas.height}px`
+    cropper.destroy();
+    // let cropBoxTop = parseInt(cropBoxData.top)
+    // let cropBoxLeft = parseInt(cropBoxData.left)
+    // let cropBoxWidth = parseInt(cropBoxData.width)
+    // let cropBoxHeight = parseInt(cropBoxData.height)
+    // let ctx = canvas.getContext('2d')
+    // let imageData = ctx.getImageData(cropBoxTop,cropBoxLeft,cropBoxWidth,cropBoxHeight);
+    // cropper.destroy()
+    // canvas.width = cropBoxWidth
+    // canvas.height = cropBoxHeight
+    // canvasDivBlock.style.width = cropBoxWidth + 'px'
+    // canvasDivBlock.style.height = cropBoxHeight + 'px'
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.putImageData(imageData,0,0)
 }
 
 const changeBrightness =(value)=>{
@@ -118,20 +159,39 @@ const changeNoise =(value)=>{
 
 const createCropOptions=()=>{
     //create Element
-    const cropOptionsBox = document.createElement('div')
-    cropOptionsBox.id = 'cropOptionsBox'
-    const cropActiveButton = document.createElement('button')
-    cropActiveButton.id = 'cropActiveButton'
-    const cropDeactiveButton = document.createElement('button')
-    cropDeactiveButton.id = 'cropDeactiveButton'
-    cropActiveButton.innerText = 'Active Crop'
-    cropDeactiveButton.innerText = 'Deactive Crop'
+    const cropActionButton = document.createElement('button')
+    cropActionButton.id = 'cropActionButton'
+    cropActionButton.innerHTML = 'Crop'
 
+    const cropBoxButtonContainer = document.createElement('div')
+    cropBoxButtonContainer.setAttribute('class', 'cropButtonContainer')
+
+    const cropActionContainer = document.createElement('div')
+    cropActionContainer.setAttribute('class', 'cropButtonContainer')
+
+    const cropBoxLabel = document.createElement('label')
+    cropBoxLabel.innerText = 'Crop Box Controller'
+
+    const cropBoxLabel2 = document.createElement('label')
+    cropBoxLabel2.innerText = 'Crop Action Controller'
+
+    const cropBoxOnButton = document.createElement('button')
+    cropBoxOnButton.id = 'cropBoxOnButton'
+    cropBoxOnButton.innerHTML = 'Turn on Crop Box'
+
+    const cropBoxOffButton = document.createElement('button')
+    cropBoxOffButton.id = 'cropBoxOffButton'
+    cropBoxOffButton.innerHTML = 'Turn off Crop Box'
+
+    cropBoxButtonContainer.appendChild(cropBoxLabel)
+    cropBoxButtonContainer.appendChild(cropBoxOnButton)
+    cropBoxButtonContainer.appendChild(cropBoxOffButton)
+
+    cropActionContainer.appendChild(cropBoxLabel2)
+    cropActionContainer.appendChild(cropActionButton)
     //append
-    cropOptionsBox.appendChild(cropActiveButton)
-    cropOptionsBox.appendChild(cropDeactiveButton)
-    container.appendChild(cropOptionsBox)
-    
+    cropOptionsBox.appendChild(cropBoxButtonContainer)
+    cropOptionsBox.appendChild(cropActionContainer)
 }
 
 const createAdjustmentSlider=(string)=>{
@@ -141,7 +201,7 @@ const createAdjustmentSlider=(string)=>{
     const slider = document.createElement('input')
 
     //put thing in element
-    sliderName.innerHTML =string
+    sliderName.innerHTML =string.slice(0,1).toUpperCase() + string.slice(1,string.length)
     slider.setAttribute('type', 'range')
     slider.setAttribute('min', -100)
     slider.setAttribute('max', 100)
@@ -152,7 +212,6 @@ const createAdjustmentSlider=(string)=>{
     sliderBox.appendChild(sliderName)
     sliderBox.appendChild(slider)
     adjustmentBar.appendChild(sliderBox)
-    container.appendChild(adjustmentBar)
 }
 
 const createAdjustmentSliderStartAtZero=(string)=>{
@@ -162,7 +221,7 @@ const createAdjustmentSliderStartAtZero=(string)=>{
     const slider = document.createElement('input')
 
     //put thing in element
-    sliderName.innerHTML = string
+    sliderName.innerHTML = string.slice(0,1).toUpperCase() + string.slice(1,string.length)
     slider.setAttribute('type', 'range')
     slider.setAttribute('min', 0)
     slider.setAttribute('max', 100)
@@ -177,7 +236,17 @@ const createAdjustmentSliderStartAtZero=(string)=>{
 }
 
 const resetContainer =()=>{
+    if(document.querySelector('#canvasDivBlock') !== null){
+        document.querySelector('#canvasDivBlock').style.boxShadow = 'none'   
+        document.querySelector('#canvasDivBlock').innerHTML ='' 
+        canvas = document.createElement('canvas')
+        canvas.id = 'canvas'
+        document.querySelector('#canvasDivBlock').appendChild(canvas)    
+    } 
     container.innerHTML =''
+    functionsContainer.innerHTML = ''
+    cropOptionsBox.innerHTML = ''
+    adjustmentBar.innerHTML = ''
 }
 
 const createCanvas=(imageURL,imageKey)=>{
@@ -186,33 +255,39 @@ const createCanvas=(imageURL,imageKey)=>{
     canvas.id ='canvas'
     const ctx = canvas.getContext('2d')
     canvas.dataset.keyword = imageKey
-    container.appendChild(canvasDivBlock)
+    ///
+    board.appendChild(canvasDivBlock)
+    //
+    container.appendChild(board)
     ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the rect to draw
     img.src = imageURL
     img.setAttribute('crossOrigin', '');
     
     img.onload = () => {
-        
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvasDivBlock.style.width = `${img.width}px`
-        canvasDivBlock.style.height = `${img.height}px`
-        ctx.drawImage(img,0,0,img.width,img.height);
+        let sizeManipulation = 1.5
+        canvas.width = img.width/sizeManipulation;
+        canvas.height = img.height/sizeManipulation;
+        canvasDivBlock.style.width = `${img.width/sizeManipulation}px`
+        canvasDivBlock.style.height = `${img.height/sizeManipulation}px`
+        canvasDivBlock.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.1)'
+        ctx.drawImage(img,0,0,img.width/sizeManipulation,img.height/sizeManipulation);
     }
 }
 
 const loadEditFunctionBar=()=>{
     //set Bar
+    container.appendChild(functionsContainer)
     const editFunctionBar = document.createElement('div')
     editFunctionBar.id = 'editFunctionBar'
-
     //set Buttons for Bar
     const adjustmentButton = document.createElement('div')
+    adjustmentButton.setAttribute('class','editFunctionButton')
     adjustmentButton.id = 'adjustButton'
     adjustmentButton.innerHTML = 'adjust'
     const cropButton = document.createElement('div')
     cropButton.id = 'cropButton'
     cropButton.innerHTML = 'crop'
+    cropButton.setAttribute('class','editFunctionButton')
     
     //--createSlider
     const sliders = ['brightness','exposure','contrast','vibrance','saturation']
@@ -228,7 +303,11 @@ const loadEditFunctionBar=()=>{
     //put buttons in the bar
     editFunctionBar.appendChild(adjustmentButton)
     editFunctionBar.appendChild(cropButton)
-    container.appendChild(editFunctionBar)
+    functionsContainer.appendChild(editFunctionBar)
+    functionsContainer.appendChild(cropOptionsBox)
+    functionsContainer.appendChild(adjustmentBar)
+    functionsContainer.appendChild(board)
+    
 }
 
 const renderEditor = (imageURL,imageKey)=>{
@@ -238,4 +317,4 @@ const renderEditor = (imageURL,imageKey)=>{
     loadEditFunctionBar()
 }
 
-export {renderEditor, changeBrightness, changeExposure, changeContrast, changeVibrance, changeSaturation, changeHue, changeSepia, changeNoise, activeCrop, deactiveCrop, downloadEditedImage, resetContainer }
+export {renderEditor, changeBrightness, changeExposure, changeContrast, changeVibrance, changeSaturation, changeHue, changeSepia, changeNoise, activeCrop, deactiveCrop, downloadEditedImage, resetContainer, cropper, crop }

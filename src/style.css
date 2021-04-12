@@ -6,6 +6,9 @@
     font-size: 16px;
     font-family: 'rubik', sans-serif;
 }
+button:focus{
+    outline:0;
+}
 
 @media only screen and (min-width: 400px){
     .setGridStyle{
@@ -14,7 +17,6 @@
     }
     .item{
         width:100%;
-        padding:5px 0;
     }
 }
 @media only screen and (min-width: 800px){
@@ -23,8 +25,7 @@
         margin:0 auto;
     }
     .item{
-        width:50%;
-        padding:5px 5px;
+        width:48%;
     }
 }
 @media only screen and (min-width: 1100px){
@@ -33,13 +34,13 @@
         margin:0 auto;
     }
     .item{
-        width:33%;
-        padding:5px 5px;
+        width:33.2%;
     }
 }
 .imageItem {
     width:100%;
     margin:0;
+    padding:3px 5px;
 }
 
 body{
@@ -54,6 +55,8 @@ body{
     background-color: rgb(20,20,20,0);
     width:100px;
     height:100px;
+    margin: 0 auto;
+
 }
 
 #cropOptionsBox{
@@ -106,11 +109,13 @@ body{
 }
 
 #recKeyword{
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 7px;
     overflow: auto;
     white-space: nowrap;
     margin-top:60px;
     background-color:white;
+    padding-left: 10px;
 }
 
 ::-webkit-scrollbar {
@@ -126,4 +131,116 @@ body{
     background: white;
     margin-right:0.5em;
     color: rgb(100,100,100)
+}
+
+#downloadFile{
+    background-Color: rgb(232,168,73);
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    color:white;
+}
+#goBackButton{
+    background: none;
+    border:0;
+    color:rgb(4,121,107);;
+}
+#goBackButton:hover{
+    outline:0;
+}
+#headerEditor{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    width:100vw;
+    height: 60px;
+    padding: 10px 10px;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: rgb(230,230,230);
+    border-radius: 100px;
+}
+input[type=range]::-webkit-slider-thumb {
+    /* -webkit-appearance: none; */
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 16px;
+    background: rgb(4,121,107);
+    cursor: pointer;
+    margin-top: -5px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    margin-bottom: -5px;
+}
+
+
+input[type=range]:focus{
+    outline:none;
+}
+
+#functionsContainer{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height: 100%;
+    padding-top:60px;
+    background:rgb(245,245,245);
+    display: flex;
+    flex-direction: row;
+}
+.editFunctionButton{
+    padding: 2rem 1.25rem;
+    
+}
+.childrenBar{
+    background: white;
+    width: 25vw;
+    padding: 2rem 1rem;
+}
+#adjustmentBar div{
+    margin-bottom: 1rem;
+}
+#adjustmentBar div input{
+    margin-top: 0.8rem;
+}
+#artboard{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    background-color:rgb(228,228,228);
+    flex:80%;
+}
+.cropButtonContainer{
+    margin-bottom: 2rem;
+}
+
+.cropButtonContainer label{
+    display: block;
+    margin-bottom: 10px;
+}
+.cropButtonContainer button{
+    border-radius: 8px;
+    padding: 0.8rem 1.6rem;
+    background: none;
+    border: 2px rgb(4,121,107) solid;
+    margin-bottom: 10px;
+    color:rgb(4,121,107);
+}
+
+#cropActionButton {
+    padding: 0.8rem 1.6rem;
+    background: rgb(4,121,107);
+    color:white;
+    border: none;
+    border-radius: 8px;
+    width:100%;
 }
