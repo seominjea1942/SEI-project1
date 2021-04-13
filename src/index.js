@@ -3,6 +3,10 @@ import header from './header.js'
 import renderKeywordsBar from './keywordsBar.js'
 import {renderImageGrid} from './image.js'
 import * as Editor from './editor.js'
+import adjustmentIconActive from './asset/adjustIcon_active@2.png'
+import adjustmentIconDeactive from './asset/adjustIcon_deactive@2.png'
+import cropIconActive from './asset/crop_active@2.png'
+import cropIconDeactive from './asset/crop_deactive@2.png'
 
 
 header();
@@ -45,19 +49,23 @@ document.addEventListener('click',(e)=>{
             Editor.deactiveCrop();
         }
     }
-    if(e.target.id === 'cropButton'){
+    if(e.target.id === 'cropButton'||e.target.id === 'cropIcon'||e.target.id === 'cropIconLabel'){
         if(window.getComputedStyle(document.querySelector('#cropOptionsBox')).getPropertyValue('display')==='none'){
             document.querySelector('#cropOptionsBox').style.display = 'block'
             document.querySelector('#adjustmentBar').style.display = 'none'
             document.querySelector('#adjustButton').style.backgroundColor = 'rgb(245,245,245)'
             document.querySelector('#cropButton').style.backgroundColor = 'rgb(255,255,255)'
+            document.querySelector('#cropButton>span').style.color = 'rgb(26,115,232)'
+            document.querySelector('#cropButton>img').src = cropIconActive
+            document.querySelector('#adjustButton>img').src = adjustmentIconDeactive
+            document.querySelector('#adjustButton>span').style.color = 'rgb(100,100,100)'
             Editor.activeCrop();
         }
     }
     if(e.target.id ==='cropActionButton'){
         Editor.crop();
     }
-    if(e.target.id === 'adjustButton'){
+    if(e.target.id === 'adjustButton'||e.target.id === 'adjustIconLabel'||e.target.id === 'adjustIcon'){
         if(window.getComputedStyle(document.querySelector('#adjustmentBar')).getPropertyValue('display')==='none'){
             if(Editor.cropper!==undefined){
                 Editor.deactiveCrop();
@@ -66,6 +74,10 @@ document.addEventListener('click',(e)=>{
             document.querySelector('#cropOptionsBox').style.display = 'none'
             document.querySelector('#adjustButton').style.backgroundColor = 'rgb(255,255,255)'
             document.querySelector('#cropButton').style.backgroundColor = 'rgb(245,245,245)'
+            document.querySelector('#adjustButton>span').style.color = 'rgb(26,115,232)'
+            document.querySelector('#cropButton>span').style.color = 'rgb(100,100,100)'
+            document.querySelector('#cropButton>img').src = cropIconDeactive
+            document.querySelector('#adjustButton>img').src = adjustmentIconActive
         }
     }
     if(e.target.id === 'cropActiveButton'&&e.target.checked === true){
@@ -123,8 +135,17 @@ searchBar.addEventListener('keypress',(e=>{
         getImageFromPixaBay();
     }
 }))
-// window.addEventListener('resize', function () {
-//     waterfall('.grid');
-// });
+
+
+window.addEventListener('resize', function () {
+
+    if(document.querySelector('#canvas')!==null){
+        Editor.resizeCanvas();
+    }
+
+    if(document.querySelector('.grid')!==null){
+        waterfall('.grid');
+    } 
+});
 
 if(module&&module.hot) module.hot.accept()

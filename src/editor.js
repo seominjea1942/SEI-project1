@@ -1,4 +1,8 @@
 import header from './header.js'
+import adjustmentIconActive from './asset/adjustIcon_active@2.png'
+import adjustmentIconDeactive from './asset/adjustIcon_deactive@2.png'
+import cropIconActive from './asset/crop_active@2.png'
+import cropIconDeactive from './asset/crop_deactive@2.png'
 
 const container = document.querySelector('.container')
 const cropOptionsBox = document.createElement('div')
@@ -15,6 +19,7 @@ let img = new Image();
 const canvasDivBlock = document.createElement('div')
 canvasDivBlock.id = 'canvasDivBlock'
 let canvas = document.createElement('canvas')
+let canvasRatio;
 canvas.id = 'canvas'
 canvasDivBlock.appendChild(canvas)
 let cropper;
@@ -66,19 +71,6 @@ const crop = () =>{
     canvasDivBlock.style.width = `${newCanvas.width}px`
     canvasDivBlock.style.height = `${newCanvas.height}px`
     cropper.destroy();
-    // let cropBoxTop = parseInt(cropBoxData.top)
-    // let cropBoxLeft = parseInt(cropBoxData.left)
-    // let cropBoxWidth = parseInt(cropBoxData.width)
-    // let cropBoxHeight = parseInt(cropBoxData.height)
-    // let ctx = canvas.getContext('2d')
-    // let imageData = ctx.getImageData(cropBoxTop,cropBoxLeft,cropBoxWidth,cropBoxHeight);
-    // cropper.destroy()
-    // canvas.width = cropBoxWidth
-    // canvas.height = cropBoxHeight
-    // canvasDivBlock.style.width = cropBoxWidth + 'px'
-    // canvasDivBlock.style.height = cropBoxHeight + 'px'
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // ctx.putImageData(imageData,0,0)
 }
 
 const changeBrightness =(value)=>{
@@ -264,13 +256,15 @@ const createCanvas=(imageURL,imageKey)=>{
     img.setAttribute('crossOrigin', '');
     
     img.onload = () => {
-        let sizeManipulation = 1.5
+        let sizeManipulation = (window.innerWidth<500)?3:1.8
         canvas.width = img.width/sizeManipulation;
         canvas.height = img.height/sizeManipulation;
+        canvas.ratio = canvas.width/canvas.height;
         canvasDivBlock.style.width = `${img.width/sizeManipulation}px`
         canvasDivBlock.style.height = `${img.height/sizeManipulation}px`
         canvasDivBlock.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.1)'
         ctx.drawImage(img,0,0,img.width/sizeManipulation,img.height/sizeManipulation);
+        resizeCanvas();
     }
 }
 
@@ -281,12 +275,31 @@ const loadEditFunctionBar=()=>{
     editFunctionBar.id = 'editFunctionBar'
     //set Buttons for Bar
     const adjustmentButton = document.createElement('div')
+    const adjustmentIcon = document.createElement('img')
+    const adjustmentButtonName = document.createElement('span')
     adjustmentButton.setAttribute('class','editFunctionButton')
     adjustmentButton.id = 'adjustButton'
-    adjustmentButton.innerHTML = 'adjust'
+    adjustmentIcon.src = adjustmentIconDeactive
+    adjustmentIcon.id = 'adjustIcon'
+    adjustmentIcon.style.maxWidth = '30px'
+    adjustmentButtonName.innerText = 'Adjustment'
+    adjustmentButtonName.id = 'adjustIconLabel'
+    adjustmentButton.appendChild(adjustmentIcon)
+    adjustmentButton.appendChild(adjustmentButtonName)
+    
     const cropButton = document.createElement('div')
+    const cropIcon = document.createElement('img')
+    const cropButtonName = document.createElement('span')
+    cropButton.setAttribute('class','editFunctionButton')
     cropButton.id = 'cropButton'
-    cropButton.innerHTML = 'crop'
+    cropIcon.src = cropIconDeactive
+    cropIcon.id = 'cropIcon'
+    cropIcon.style.maxWidth = '30px'
+    cropButtonName.innerText = 'Crop'
+    cropButtonName.id = 'cropIconLabel'
+    cropButton.appendChild(cropIcon)
+    cropButton.appendChild(cropButtonName)
+    
     cropButton.setAttribute('class','editFunctionButton')
     
     //--createSlider
@@ -310,6 +323,23 @@ const loadEditFunctionBar=()=>{
     
 }
 
+
+const resizeCanvas =()=>{
+    let currentCanvas = document.querySelector('#canvas')
+    let currentCtx = currentCanvas.getContext('2d')
+    let artboard = document.querySelector('#artboard')
+    let artboardWidth = parseInt(window.getComputedStyle(artboard).getPropertyValue('width').slice(0,-2))
+    let canvasDivBlock = document.querySelector('#canvasDivBlock')
+    
+    
+    currentCanvas.width = artboardWidth * 0.8
+    currentCanvas.height = currentCanvas.width /canvas.ratio
+    canvasDivBlock.style.width = currentCanvas.width +'px'
+    canvasDivBlock.style.height = currentCanvas.height +'px'
+    currentCtx.drawImage(img, 0, 0, currentCanvas.width, currentCanvas.height);
+
+}
+
 const renderEditor = (imageURL,imageKey)=>{
     resetContainer()
     header('editor')
@@ -317,4 +347,4 @@ const renderEditor = (imageURL,imageKey)=>{
     loadEditFunctionBar()
 }
 
-export {renderEditor, changeBrightness, changeExposure, changeContrast, changeVibrance, changeSaturation, changeHue, changeSepia, changeNoise, activeCrop, deactiveCrop, downloadEditedImage, resetContainer, cropper, crop }
+export {renderEditor, changeBrightness, changeExposure, changeContrast, changeVibrance, changeSaturation, changeHue, changeSepia, changeNoise, activeCrop, deactiveCrop, downloadEditedImage, resetContainer, cropper, crop, resizeCanvas }
