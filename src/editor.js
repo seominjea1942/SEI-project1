@@ -99,7 +99,6 @@ const crop = () =>{
             ctx.clearRect(0,0,currentCanvas.width,currentCanvas.height)
             currentCanvas.width = newCanvas.width
             currentCanvas.height = newCanvas.height
-            console.log(currentCanvas.width, newCanvas.width)
             ctx.drawImage(newCanvas,0,0)
             canvasDivBlock.style.width = `${newCanvas.width}px`
             canvasDivBlock.style.height = `${newCanvas.height}px`
@@ -375,7 +374,6 @@ const loadEditFunctionBar=()=>{
     adjustmentBar.appendChild(adjustmentApplyButton);
 
     createCropOptions();
-    console.log(sliderToggleBar)
     //put buttons in the bar
 
     editFunctionBar.appendChild(adjustmentButton)
@@ -426,7 +424,6 @@ const applyAdjustment =()=>{
         this.noise(sliderValue('noise'))
         this.render();
     })
-    console.log(sliderValue('brightness'))
     inMemoryImg.src = currentCanvas.toDataURL("image/jpeg", 1.0);
     canvas.removeAttribute('data-caman-id')
     refresh();

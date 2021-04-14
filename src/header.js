@@ -11,6 +11,7 @@ const header = (page='search') => {
     
     const logo = document.createElement('div')
     const img = document.createElement('img')
+    img.id ='logoIMG'
     img.src = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?logoImageDark:logoImage
     img.style.maxWidth = (window.innerWidth<400)?'25px':'30px';
     logo.id = 'logo'
@@ -27,6 +28,7 @@ const header = (page='search') => {
     const clearButton = document.createElement('div')
     clearButton.id ='keywordClearButton'
     const clearImg = document.createElement('img')
+    clearImg.id = 'clearButtonImg'
     clearImg.src =  (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?searchClearButtonDark:searchClearButton
     clearImg.style.maxWidth = '18px'
     clearButton.appendChild(clearImg)

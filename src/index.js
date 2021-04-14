@@ -17,16 +17,15 @@ header();
 mainAnimation();
 const searchBar = document.querySelector('#searchBar')
 
-const getImageFromPixaBay = async() =>{
+const getImageFromPixaBay = async(page=1) =>{
     let keyword = searchBar.value.trim().split(' ')
     keyword = keyword.join('+')
-    const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&per_page=48`
+    const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&page=${page}&per_page=50`
     const imageResultBox = document.createElement('div')
     imageResultBox.setAttribute('class','grid')
     const response = await fetch(url)
     const data = await response.json()
     const dataArray = data.hits // image objects are under the hits arrray
-    console.log(dataArray)
     renderKeywordsBar(dataArray)
     renderImageGrid(imageResultBox,dataArray)
 
@@ -36,7 +35,8 @@ const getImageFromPixaBay = async() =>{
 document.addEventListener('click',(e)=>{
     if(e.target.className === 'keywordRecommendation'){
         let newKeyword = e.target.innerText
-        searchBar.value = newKeyword
+        document.querySelector('#searchBar').value =''
+        document.querySelector('#searchBar').value = newKeyword
         getImageFromPixaBay();
     }
     if(e.target.className === 'imageItem'){
@@ -112,6 +112,17 @@ document.addEventListener('click',(e)=>{
         Editor.resetContainer()
         header();
         getImageFromPixaBay();
+        document.querySelector('#searchBar').addEventListener('keypress',(e)=>{
+            if(e.key === 'Enter'){
+                if(document.querySelector('#noResultAnimation')!==null){
+                    document.querySelector('#noResultAnimation').remove() 
+                }
+                if(document.querySelector('#mainAnimation')!==null){
+                    document.querySelector('#mainAnimation').remove() 
+                }
+                getImageFromPixaBay();
+            }
+        })
     }
     if(e.target.id ==='resetImage'){
         Editor.resetImage();
@@ -136,6 +147,25 @@ document.addEventListener('click',(e)=>{
     if(e.target.id ==='applyAdjustment'){
         Editor.applyAdjustment();
         
+    }
+    if(e.target.id === 'logoIMG'){
+        document.querySelector('.container').innerHTML =''
+        header();
+        mainAnimation();
+        document.querySelector('#searchBar').addEventListener('keypress',(e)=>{
+            if(e.key === 'Enter'){
+                if(document.querySelector('#noResultAnimation')!==null){
+                    document.querySelector('#noResultAnimation').remove() 
+                }
+                if(document.querySelector('#mainAnimation')!==null){
+                    document.querySelector('#mainAnimation').remove() 
+                }
+                getImageFromPixaBay();
+            }
+        })
+    }
+    if(e.target.id === 'keywordClearButton'||e.target.id === 'clearButtonImg'){
+        document.querySelector('#searchBar').value=''
     }
 })
 
@@ -165,7 +195,8 @@ document.addEventListener('change',e=>{
         Editor.changeNoise(e.target.value);
     } 
 })
-searchBar.addEventListener('keypress',(e=>{
+
+searchBar.addEventListener('keypress',(e)=>{
     if(e.key === 'Enter'){
         if(document.querySelector('#noResultAnimation')!==null){
             document.querySelector('#noResultAnimation').remove() 
@@ -175,7 +206,8 @@ searchBar.addEventListener('keypress',(e=>{
         }
         getImageFromPixaBay();
     }
-}))
+})
+
 
 
 window.addEventListener('resize', function () {

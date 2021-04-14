@@ -17,7 +17,6 @@ const noResultAnimation =()=>{
     lottiePlayer.setAttribute('loop','')
     lottiePlayer.setAttribute('autoplay','')
     animationBox.id = 'noResultAnimation'
-    console.log(lottiePlayer)
     animationBox.appendChild(lottiePlayer)
     animationBox.appendChild(h1)
     animationBox.appendChild(p)
@@ -41,7 +40,6 @@ const mainAnimation=()=>{
     lottiePlayer.setAttribute('loop','')
     lottiePlayer.setAttribute('autoplay','')
     animationBox.id = 'mainAnimation'
-    console.log(lottiePlayer)
     animationBox.appendChild(lottiePlayer)
     animationBox.appendChild(h1)
     //parentNode.insertBefore(newNode, referenceNode)
