@@ -18,7 +18,7 @@ mainAnimation();
 const searchBar = document.querySelector('#searchBar')
 
 const getImageFromPixaBay = async(page=1) =>{
-    let keyword = searchBar.value.trim().split(' ')
+    let keyword = document.querySelector('#searchBar').value.trim().split(' ')
     keyword = keyword.join('+')
     const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&page=${page}&per_page=50`
     const imageResultBox = document.createElement('div')
