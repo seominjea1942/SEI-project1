@@ -1,6 +1,9 @@
 import logoImage from './asset/logo@2.png';
+import logoImageDark from './asset/logo_darkmode@2.png';
 import searchClearButton from './asset/searchClearButtonImage@2.png'
+import searchClearButtonDark from './asset/searchClearButtonImage_darkmode@2.png'
 import searchIcon from './asset/searchIcon@2.png'
+import searchIconDark from './asset/searchIcon_darkmode@2.png'
 
 const header = (page='search') => {
     const container = document.querySelector('.container')
@@ -8,7 +11,7 @@ const header = (page='search') => {
     
     const logo = document.createElement('div')
     const img = document.createElement('img')
-    img.src = logoImage
+    img.src = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?logoImageDark:logoImage
     img.style.maxWidth = (window.innerWidth<400)?'25px':'30px';
     logo.id = 'logo'
     logo.appendChild(img)
@@ -24,22 +27,27 @@ const header = (page='search') => {
     const clearButton = document.createElement('div')
     clearButton.id ='keywordClearButton'
     const clearImg = document.createElement('img')
-    clearImg.src = searchClearButton
+    clearImg.src =  (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?searchClearButtonDark:searchClearButton
     clearImg.style.maxWidth = '18px'
     clearButton.appendChild(clearImg)
 
     const searchIconPlaceholder = document.createElement('img')
     searchIconPlaceholder.setAttribute('class','searchPlaceholder')
-    searchIconPlaceholder.src = searchIcon
+    searchIconPlaceholder.src =  (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?searchIconDark:searchIcon
     searchIconPlaceholder.style.maxWidth = (window.innerWidth<400)?'16px':'20px'
     searchIconPlaceholder.style.maxHeight = (window.innerWidth<400)?'16px':'20px'
 
+    const editorTopActionButtonbox = document.createElement('div')
     const downloadButton = document.createElement('button')
     const goBackButton = document.createElement('button')
     downloadButton.id = 'downloadFile'
     downloadButton.innerText = 'Download'
     goBackButton.id = 'goBackButton'
     goBackButton.innerText = '< Go back'
+
+    const resetButton = document.createElement('button')
+    resetButton.id = 'resetImage'
+    resetButton.innerText = 'Reset the image'
     
 
     if(page==='search'){
@@ -53,8 +61,10 @@ const header = (page='search') => {
     }
     if(page==='editor'){
         header.id = 'headerEditor'
+        editorTopActionButtonbox.appendChild(resetButton)
+        editorTopActionButtonbox.appendChild(downloadButton)
         header.appendChild(goBackButton)
-        header.appendChild(downloadButton)
+        header.appendChild(editorTopActionButtonbox)
         container.appendChild(header)
     }
 }

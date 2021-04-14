@@ -1,3 +1,4 @@
+import {noResultAnimation} from './animation'
 
 const putImagesInContainer =(imageResultBox,dataArray)=>{
     for(let i=0;i<dataArray.length;i++){
@@ -11,8 +12,12 @@ const putImagesInContainer =(imageResultBox,dataArray)=>{
         prevImg.onload = function(){
             div.appendChild(prevImg)
             imageResultBox.appendChild(div)
-            if(document.querySelector('.grid') !== null){
-                waterfall('.grid')
+            try{
+                if(document.querySelector('.grid') !== null&&document.querySelector('.grid') !== undefined){
+                    waterfall('.grid')
+                }
+            }catch(error){
+
             }
         }
     }
@@ -35,7 +40,7 @@ const renderImageGrid =(imageResultBox,dataArray)=>{
     // contentContainer.id='contentContainer'
     putImagesInContainer(imageResultBox,dataArray)
     } else {
-        console.log('no result')
+        noResultAnimation();
     }
 }
 

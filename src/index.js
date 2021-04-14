@@ -4,12 +4,17 @@ import renderKeywordsBar from './keywordsBar.js'
 import {renderImageGrid} from './image.js'
 import * as Editor from './editor.js'
 import adjustmentIconActive from './asset/adjustIcon_active@2.png'
+import adjustmentIconActiveDark from './asset/adjustIcon_active_darkmode@2.png'
 import adjustmentIconDeactive from './asset/adjustIcon_deactive@2.png'
+import adjustmentIconDeactiveDark from './asset/adjustIcon_deactive_darkmode@2.png'
 import cropIconActive from './asset/crop_active@2.png'
+import cropIconActiveDark from './asset/crop_active@2_darkmode.png'
 import cropIconDeactive from './asset/crop_deactive@2.png'
-
+import cropIconDeactiveDark from './asset/crop_deactive_darkmode@2.png'
+import {mainAnimation} from './animation.js'
 
 header();
+mainAnimation();
 const searchBar = document.querySelector('#searchBar')
 
 const getImageFromPixaBay = async() =>{
@@ -17,14 +22,14 @@ const getImageFromPixaBay = async() =>{
     keyword = keyword.join('+')
     const url = `https://pixabay.com/api/?key=8387696-25c6f03714056f24bf5936cb9&q=${keyword}&image_type=photo&per_page=48`
     const imageResultBox = document.createElement('div')
-    imageResultBox.setAttribute('class','grid setGridStyle')
+    imageResultBox.setAttribute('class','grid')
     const response = await fetch(url)
     const data = await response.json()
     const dataArray = data.hits // image objects are under the hits arrray
     console.log(dataArray)
     renderKeywordsBar(dataArray)
     renderImageGrid(imageResultBox,dataArray)
-  
+
 }
 
 //event listener
@@ -47,18 +52,21 @@ document.addEventListener('click',(e)=>{
     if(e.target.id === 'cropBoxOffButton'){
         if(document.querySelector('.cropper-hidden')!==null){
             Editor.deactiveCrop();
+            Editor.resizeCanvas();
         }
     }
     if(e.target.id === 'cropButton'||e.target.id === 'cropIcon'||e.target.id === 'cropIconLabel'){
         if(window.getComputedStyle(document.querySelector('#cropOptionsBox')).getPropertyValue('display')==='none'){
             document.querySelector('#cropOptionsBox').style.display = 'block'
             document.querySelector('#adjustmentBar').style.display = 'none'
-            document.querySelector('#adjustButton').style.backgroundColor = 'rgb(245,245,245)'
-            document.querySelector('#cropButton').style.backgroundColor = 'rgb(255,255,255)'
-            document.querySelector('#cropButton>span').style.color = 'rgb(26,115,232)'
-            document.querySelector('#cropButton>img').src = cropIconActive
-            document.querySelector('#adjustButton>img').src = adjustmentIconDeactive
-            document.querySelector('#adjustButton>span').style.color = 'rgb(100,100,100)'
+            document.querySelector('#adjustButton').classList.remove('active')
+            document.querySelector('#adjustButton').classList.add('deactive')
+            document.querySelector('#cropButton').classList.add('active')
+            document.querySelector('#cropButton>span').style.color = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'rgb(128,175,255)':'rgb(26,115,232)'
+            document.querySelector('#cropButton>img').src = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?cropIconActiveDark:cropIconActive
+            document.querySelector('#adjustButton>img').src = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?adjustmentIconDeactiveDark:adjustmentIconDeactive
+            document.querySelector('#adjustButton>span').style.color = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'rgb(150,150,150)':'rgb(100,100,100)'
+            Editor.resizeCanvas()
             Editor.activeCrop();
         }
     }
@@ -72,12 +80,14 @@ document.addEventListener('click',(e)=>{
             }
             document.querySelector('#adjustmentBar').style.display = 'block'
             document.querySelector('#cropOptionsBox').style.display = 'none'
-            document.querySelector('#adjustButton').style.backgroundColor = 'rgb(255,255,255)'
-            document.querySelector('#cropButton').style.backgroundColor = 'rgb(245,245,245)'
-            document.querySelector('#adjustButton>span').style.color = 'rgb(26,115,232)'
-            document.querySelector('#cropButton>span').style.color = 'rgb(100,100,100)'
-            document.querySelector('#cropButton>img').src = cropIconDeactive
-            document.querySelector('#adjustButton>img').src = adjustmentIconActive
+            document.querySelector('#adjustButton').classList.add('active')
+            document.querySelector('#cropButton').classList.remove('active')
+            document.querySelector('#cropButton').classList.add('deactive')
+            document.querySelector('#adjustButton>span').style.color = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'rgb(128,175,255)':'rgb(26,115,232)'
+            document.querySelector('#cropButton>span').style.color = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'rgb(150,150,150)':'rgb(100,100,100)'
+            document.querySelector('#cropButton>img').src = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?cropIconDeactiveDark:cropIconDeactive
+            document.querySelector('#adjustButton>img').src = (window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?adjustmentIconActiveDark:adjustmentIconActive
+            Editor.resizeCanvas()
         }
     }
     if(e.target.id === 'cropActiveButton'&&e.target.checked === true){
@@ -86,6 +96,7 @@ document.addEventListener('click',(e)=>{
         }
         Editor.activeCrop();
     }
+    
     if(e.target.id === 'cropActiveButton'&&e.target.checked === false){
         Editor.deactiveCrop();
     }
@@ -101,6 +112,30 @@ document.addEventListener('click',(e)=>{
         Editor.resetContainer()
         header();
         getImageFromPixaBay();
+    }
+    if(e.target.id ==='resetImage'){
+        Editor.resetImage();
+    }
+    
+    if(e.target.classList.contains('sliderToggleButton')){
+        let slider = document.querySelector(`.sliderBox>input[name=${e.target.innerText}]`)
+        let sliders = document.querySelectorAll('.sliderBox')
+        let toggleButton = document.querySelector('.toggleActive')
+        if(toggleButton !==null){
+            toggleButton.classList.remove('toggleActive')
+        }
+        for(let i = 0; i<sliders.length; i++){
+            sliders[i].style.display ='none'
+        }
+        if(e.target.innerText === slider.name){
+            slider.parentNode.style.display = 'block'
+            e.target.classList.add('toggleActive')
+        }
+    }
+
+    if(e.target.id ==='applyAdjustment'){
+        Editor.applyAdjustment();
+        
     }
 })
 
@@ -132,6 +167,12 @@ document.addEventListener('change',e=>{
 })
 searchBar.addEventListener('keypress',(e=>{
     if(e.key === 'Enter'){
+        if(document.querySelector('#noResultAnimation')!==null){
+            document.querySelector('#noResultAnimation').remove() 
+        }
+        if(document.querySelector('#mainAnimation')!==null){
+            document.querySelector('#mainAnimation').remove() 
+        }
         getImageFromPixaBay();
     }
 }))
