@@ -55,6 +55,13 @@ Users can download the Edited Image.
 - Using API
 - Implement responsive design
 
+# Reference
+- pixabayAPI(https://pixabay.com/api/docs/)
+- Webpack(https://webpack.js.org/)
+- WaterfallJS(http://raphamorim.io/waterfall.js/)
+- CamanJS(http://camanjs.com/)
+- CropperJS(https://github.com/fengyuanchen/cropperjs)
+- Lottie Animation(https://lottiefiles.com/)(2 free animation sources)
 
 # Next steps
 - Bug fixes for Search with recommendation and Image Overlap in Canvas
