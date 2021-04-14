@@ -92,7 +92,7 @@ body{
 
 #logo {
     margin: 20px 15px 20px 20px;
-    
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 500px){
@@ -153,6 +153,7 @@ input::placeholder {
     justify-content: center;
     align-items: center;
     padding: 0 10px;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 500px){
