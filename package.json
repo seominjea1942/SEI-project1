@@ -23,6 +23,7 @@
     "autoprefixer": "^10.2.5",
     "caman": "^2.0.0",
     "css-loader": "^5.2.0",
+    "file-loader": "^6.2.0",
     "postcss": "^8.2.9",
     "style-loader": "^2.0.0",
     "tailwindcss": "^2.1.1",
@@ -31,6 +32,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "lottie-web": "^5.7.8",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "waterfall": "^3.0.1"
