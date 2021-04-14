@@ -31,8 +31,6 @@ Users can crop the image with the dimension they need
 #### Feature4:
 Users can quickly edit Brightness, Contrast, and the other five values of the image.
 <img width="1535" alt="Screen Shot 2021-04-14 at 12 02 37 AM" src="https://user-images.githubusercontent.com/47792576/114667852-d8c88b80-9cb4-11eb-8054-32a80ca401f0.png">
-<img width="1536" alt="Screen Shot 2021-04-14 at 12 02 21 AM" src="https://user-images.githubusercontent.com/47792576/114667876-de25d600-9cb4-11eb-829a-760688d7da30.png">
-
 
 
 
